@@ -22,29 +22,32 @@
         }
 
         .booking {
-            background: #333;
+            background: transparent;
             color: white;
             padding: 30px;
             margin: 50px auto;
             max-width: 450px;
             border-radius: 10px;
-            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
             display: flex;
             flex-direction: column;
             align-items: center;
             /* Centra gli elementi orizzontalmente */
             justify-content: center;
             /* Centra gli elementi verticalmente */
-            transition: height 1s ease-out; /* Aggiungi la transizione per l'altezza */
-            height: auto; /* Inizialmente l'altezza sarà adattata al contenuto */
+            transition: height 1s ease-out;
+            /* Aggiungi la transizione per l'altezza */
+            height: auto;
+            /* Inizialmente l'altezza sarà adattata al contenuto */
             animation: slideIn 0.5s ease-out forwards;
-            
+
 
         }
+
         .hidden {
             visibility: hidden;
             pointer-events: none;
         }
+
         input,
         button {
             padding: 12px;
@@ -67,7 +70,7 @@
         }
 
 
-        button:active{
+        button:active {
             background-color: #322555;
 
         }
@@ -96,10 +99,8 @@
             animation: slideIn 0.5s ease-out forwards;
         }
 
-        #slots-list li:hover{
-            background-color: #4A377D;
-            transform: scale(1.05);
-        }
+
+
         #slots-list li.selected {
             background-color: #322555;
             transform: scale(1.05);
@@ -108,11 +109,14 @@
         #confirmation {
             opacity: 0;
             transition: opacity 0.5s ease-in-out;
-            text-align: center; /* Centra il testo */
-            margin-top: 20px; /* Aggiungi un po' di margine per separare dal resto del contenuto */
-            display: block; /* Assicurati che sia un blocco e possa centrare il contenuto */
+            text-align: center;
+            /* Centra il testo */
+            margin-top: 20px;
+            /* Aggiungi un po' di margine per separare dal resto del contenuto */
+            display: block;
+            /* Assicurati che sia un blocco e possa centrare il contenuto */
         }
-        
+
 
         #confirmation.visible {
             opacity: 1;
@@ -190,16 +194,31 @@
             padding: 10px 20px;
             border-radius: 5px;
             text-align: center;
-            position: fixed;  /* Cambiato da absolute a fixed */
-            top: 20px; /* Oppure bottom: 20px; se lo vuoi in basso */
+            position: fixed;
+            /* Cambiato da absolute a fixed */
+            top: 20px;
+            /* Oppure bottom: 20px; se lo vuoi in basso */
             left: 50%;
             transform: translateX(-50%);
             opacity: 0;
             transition: opacity 0.5s ease-out;
-            z-index: 1000; /* Assicura che il toast sia sopra gli altri elementi */
+            z-index: 1000;
+            /* Assicura che il toast sia sopra gli altri elementi */
         }
-        
+
         #toast.visible {
             opacity: 1;
         }
+
+/* Solo su dispositivi con mouse (quando la classe 'hasHover' è presente) */
+body.hasHover #slots-list li:hover {
+    background-color: #4A377D;
+    transform: scale(1.05);
+  }
+  
+  /* Su dispositivi touch, nessun effetto hover */
+  body:not(.hasHover) #slots-list li:hover {
+    transform: none;
+  }
+  
         

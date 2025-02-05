@@ -25,25 +25,43 @@ function getTouchPosition(event) {
 
 // Funzione per mostrare la modale con animazione dalla posizione del click/tocco
 function showModal(event) {
-    let { x, y } = getTouchPosition(event);
+    // Variabile per tenere traccia dei tocchi per ogni immagine
+    let touchCount = event.target.touchCount || 0;
+    touchCount++;
 
-    // Posiziona la modale inizialmente dove è stato toccato/cliccato
-    modal.style.left = `${x}px`;
-    modal.style.top = `${y}px`;
-    modal.style.transform = "scale(0)"; // Inizia da scala 0
+    if (touchCount === 2) {
+        // Posizione del click/tocco
+        let { x, y } = getTouchPosition(event);
 
-    modal.style.display = "flex"; // Mostra la modale
+        // Posiziona la modale inizialmente dove è stato toccato/cliccato
+        modal.style.left = `${x}px`;
+        modal.style.top = `${y}px`;
+        modal.style.transform = "scale(0)"; // Inizia da scala 0
 
-    // Forza il reflow per garantire che l'animazione parta dalla posizione iniziale
-    void modal.offsetWidth;
+        modal.style.display = "flex"; // Mostra la modale
 
-    // Attiva l'animazione per portarla al centro
-    modal.style.transition = "transform 0.5s ease-out, left 0.5s ease-out, top 0.5s ease-out";
-    modal.style.left = "50%";
-    modal.style.top = "50%";
-    modal.style.transform = "translate(-50%, -50%) scale(1)"; 
+        // Forza il reflow per garantire che l'animazione parta dalla posizione iniziale
+        void modal.offsetWidth;
 
-    modalImg.src = event.target.src; // Imposta l'immagine selezionata
+        // Attiva l'animazione per portarla al centro
+        modal.style.transition = "transform 0.5s ease-out, left 0.5s ease-out, top 0.5s ease-out";
+        modal.style.left = "50%";
+        modal.style.top = "50%";
+        modal.style.transform = "translate(-50%, -50%) scale(1)"; 
+
+        modalImg.src = event.target.src; // Imposta l'immagine selezionata
+
+        // Reset del contatore per questa immagine
+        event.target.touchCount = 0;
+    } else {
+        // Salva il contatore dei tocchi per questa immagine
+        event.target.touchCount = touchCount;
+
+        // Resetta il contatore dopo un breve intervallo se non ci sono 2 tocchi
+        setTimeout(() => {
+            event.target.touchCount = 0;
+        }, 500); // 500 ms per il reset
+    }
 }
 
 // Aggiunge l'evento sia per il click che per il tocco
