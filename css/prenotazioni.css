@@ -1,0 +1,205 @@
+        /* Mantieni lo stile originale come richiesto */
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #AB94FF;
+        }
+
+        header {
+            background-color: #111;
+            padding: 20px;
+            color: white;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin: 0;
+            font-weight: bold;
+        }
+
+        .booking {
+            background: #333;
+            color: white;
+            padding: 30px;
+            margin: 50px auto;
+            max-width: 450px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* Centra gli elementi orizzontalmente */
+            justify-content: center;
+            /* Centra gli elementi verticalmente */
+            transition: height 1s ease-out; /* Aggiungi la transizione per l'altezza */
+            height: auto; /* Inizialmente l'altezza sarà adattata al contenuto */
+            animation: slideIn 0.5s ease-out forwards;
+            
+
+        }
+        .hidden {
+            visibility: hidden;
+            pointer-events: none;
+        }
+        input,
+        button {
+            padding: 12px;
+            border-radius: 5px;
+            border: 1px solid #444;
+            background: #222;
+            color: white;
+            font-size: 16px;
+            margin-bottom: 15px;
+            width: 100%;
+            /* Gli input e i pulsanti occupano tutta la larghezza */
+            max-width: 350px;
+            /* Limita la larghezza massima per un aspetto migliore */
+        }
+
+        button {
+            background-color: #4A377D;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+
+        button:active{
+            background-color: #322555;
+
+        }
+
+        #slots-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 25px;
+            padding: 0;
+            margin-top: 15px;
+            opacity: 0;
+            animation: fadeIn 1s ease-out forwards;
+            max-width: 350px;
+            /* Allinea anche la lista degli orari */
+        }
+
+        #slots-list li {
+            background-color: #444;
+            color: white;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: transform 0.3s ease, background 0.3s ease;
+            opacity: 0;
+            animation: slideIn 0.5s ease-out forwards;
+        }
+
+        #slots-list li:hover{
+            background-color: #4A377D;
+            transform: scale(1.05);
+        }
+        #slots-list li.selected {
+            background-color: #322555;
+            transform: scale(1.05);
+        }
+
+        #confirmation {
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            text-align: center; /* Centra il testo */
+            margin-top: 20px; /* Aggiungi un po' di margine per separare dal resto del contenuto */
+            display: block; /* Assicurati che sia un blocco e possa centrare il contenuto */
+        }
+        
+
+        #confirmation.visible {
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .booking {
+                width: 90%;
+                padding: 20px;
+            }
+
+            #slots-list li {
+                font-size: 14px;
+            }
+        }
+
+        /* Animazione di ingresso della lista degli orari */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Animazione per l'ingresso degli orari singoli */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Animazione per il messaggio di conferma */
+        @keyframes confirmationAnimation {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        #confirmation.visible {
+            animation: confirmationAnimation 0.8s ease-out forwards;
+        }
+
+        /* Animazione per il messaggio di caricamento */
+        @keyframes loadingAnimation {
+            0% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        #toast {
+            display: block;
+            background-color: #2ecc71;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-align: center;
+            position: fixed;  /* Cambiato da absolute a fixed */
+            top: 20px; /* Oppure bottom: 20px; se lo vuoi in basso */
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.5s ease-out;
+            z-index: 1000; /* Assicura che il toast sia sopra gli altri elementi */
+        }
+        
+        #toast.visible {
+            opacity: 1;
+        }
+        

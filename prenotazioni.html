@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="BarberShop & Hair Salon HTML Template">
+    <meta name="author" content="Raffaele Italiano">
+    <title>The Punisher Style - book appointment</title>
+    <link rel="shortcut icon" type="image/x-icon" href="images/logohamed.png">
+    <link rel="stylesheet" href="css/prenotazioni.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            <img src="images/logo.png" alt="The Punisher Style Logo" />
+        </div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="index.html">home</a></li>
+                <li><a href="gallery.html">foto</a></li>
+                <li><a href="prenotazioni.html">prenota</a></li>
+            </ul>
+            <div class="menu-toggle" id="menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="booking">
+            <h2 id="book-h1">Prenota il tuo appuntamento</h2>
+            <div id="toast" class="hidden">
+                <p id="toast-message"></p>
+            </div>
+
+            <label id="label-date" for="appointment-date">Seleziona la data:</label>
+            <input type="date" id="appointment-date">
+
+            <label id="label-name" for="name">Nome:</label>
+            <input type="text" id="name" placeholder="Inserisci il tuo nome">
+            <div id="time-slots" class="hidden">
+                <h3>Seleziona la fascia oraria</h3>
+                <ul id="slots-list"></ul>
+                <button id="book-appointment">Conferma</button>
+            </div>
+
+            <div id="confirmation" class="hidden">
+                <h3>Conferma Prenotazione</h3>
+                <p id="confirmation-message"></p>
+            </div>
+        </section>
+    </main>
+
+    <footer id="contatti">
+        <p>&copy; 2025 The Punisher Style - Tutti i diritti riservati</p>
+        <p>Seguici sui social: <a href="https://www.instagram.com/samuele_parrone__?igsh=MTY2c2RybDNjN2wybg==">Instagram</p>
+    </footer>
+
+</body>
+<script src="js/script.js"></script>
+<script>
+    document.getElementById('menu-toggle').addEventListener('click', function() {
+        const navLinks = document.querySelector('.nav-links');
+        const menuToggle = document.getElementById('menu-toggle');
+        
+        navLinks.classList.toggle('active');
+        menuToggle.classList.toggle('active'); // Aggiungi animazione anche per l'icona
+    });
+    
+    
+    </script>
+</html>
