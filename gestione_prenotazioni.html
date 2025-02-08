@@ -1,0 +1,33 @@
+  <!DOCTYPE html>
+  <html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>gestione prenotazioni</title>
+    <link rel="stylesheet" href="css/gestione.css">
+
+  </head>
+
+  <body>
+    <div id="booking_container">
+      <div id="time">
+        <h2>modifica orari</h2>
+        <input type="text" placeholder="Orario di apertura" id="start_book">
+        <input type="text" placeholder="Orario di chiusura" id="end_book">
+        <input type="date" id="calendar-hour-modifier">
+        <button id="modify_book_time">modifica orari</button>
+      </div>  
+      <div id="date">
+        <h2>modifica date di chiusura</h2>
+        <input type="date" placeholder="giorno di chiusura" id="start_close_day">
+        <input type="date" placeholder="giorno di chiusura" id="end_close_day">
+        <button id="modify_date">modifica date</button>
+      </div>
+    </div>
+    <ul id="agenda">
+      <!-- Altri elementi... -->
+    </ul>
+    <script src="js/gestione.js"></script>
+  </body>
+
+  </html>
