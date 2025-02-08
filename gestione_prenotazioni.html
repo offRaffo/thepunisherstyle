@@ -1,33 +1,41 @@
-  <!DOCTYPE html>
-  <html lang="en">
+<!DOCTYPE html>
+<html lang="en">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
+<head>
   <head>
     <meta charset="UTF-8">
     <title>gestione prenotazioni</title>
     <link rel="stylesheet" href="css/gestione.css">
-
+    <link rel="shortcut icon" type="image/x-icon" href="images/logohamed.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/logohamed.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/logohamed.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/logohamed.png">
   </head>
+  <link rel="shortcut icon" type="image/x-icon" href="images/logohamed.png">
 
-  <body>
-    <div id="booking_container">
-      <div id="time">
-        <h2>modifica orari</h2>
-        <input type="text" placeholder="Orario di apertura" id="start_book">
-        <input type="text" placeholder="Orario di chiusura" id="end_book">
-        <input type="date" id="calendar-hour-modifier">
-        <button id="modify_book_time">modifica orari</button>
-      </div>  
-      <div id="date">
-        <h2>modifica date di chiusura</h2>
-        <input type="date" placeholder="giorno di chiusura" id="start_close_day">
-        <input type="date" placeholder="giorno di chiusura" id="end_close_day">
-        <button id="modify_date">modifica date</button>
-      </div>
+</head>
+
+<body>
+  <div id="booking_container">
+    <div id="time">
+      <h2>modifica orari</h2>
+      <input type="text" placeholder="Orario di apertura" id="start_book">
+      <input type="text" placeholder="Orario di chiusura" id="end_book">
+      <input type="date" id="calendar-hour-modifier">
+      <button id="modify_book_time">modifica orari</button>
     </div>
-    <ul id="agenda">
-      <!-- Altri elementi... -->
-    </ul>
-    <script src="js/gestione.js"></script>
-  </body>
+    <div id="date">
+      <h2>modifica date di chiusura</h2>
+      <input type="date" placeholder="giorno di chiusura" id="start_close_day">
+      <input type="date" placeholder="giorno di chiusura" id="end_close_day">
+      <button id="modify_date">modifica date</button>
+    </div>
+  </div>
+  <ul id="agenda">
+    <!-- Altri elementi... -->
+  </ul>
+  <script src="js/gestione.js"></script>
+</body>
 
-  </html>
+</html>

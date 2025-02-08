@@ -42,7 +42,6 @@ ul li {
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.18);
   position: relative;
-  /* Necessario per posizionare l'immagine all'interno */
 }
 
 ul li:hover {
@@ -104,11 +103,6 @@ ul .today time {
   padding: 20px;
   /* Aggiungi un po' di spazio intorno al contenuto del pulsante */
 }
-@keyframes clickAnimation {
-  0% { transform: scale(1); }
-  50% { transform: scale(0.9); }
-  100% { transform: scale(1); }
-}
 
 .clicked {
   animation: clickAnimation 0.2s ease-out;
@@ -156,4 +150,39 @@ ul .today time {
   display: flex;
   align-items: center;
   gap: 20px;
+}
+
+@media only screen and (max-width:768px) {
+
+  #booking_container {
+    display: flex;
+    gap: 50px;
+    width: 100%;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #time {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-direction: column;
+  }
+
+  #date {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-direction: column;
+  }
+
+  .month-list {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    padding: 0;
+    justify-content: center;
+  }
+
 }
