@@ -1,15 +1,17 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;500;800&display=swap");
-html, body {
-    height: 100vh;
-    margin: 0;
-    background: radial-gradient(circle, #eeaeca 0%, #94bbe9 100%);
-    font-family: "Poppins", sans-serif;
+
+html,
+body {
+  height: 100vh;
+  margin: 0;
+  background: radial-gradient(circle, #eeaeca 0%, #94bbe9 100%);
+  font-family: "Poppins", sans-serif;
 }
 
 body {
-    display: flex;
-    flex-flow: column;
-    align-items: center;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
 }
 
 h1 {
@@ -23,7 +25,7 @@ ul {
   /* Tre colonne */
   gap: 10px;
   /* Spazio tra gli elementi della griglia */
-  padding: 0;
+  padding-left: 20px;
   margin: 0;
 }
 
@@ -186,5 +188,12 @@ ul .today time {
     list-style: none;
     padding: 0;
     justify-content: center;
+  }
+
+  ul {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .month-container{
+    display: block;
   }
 }
