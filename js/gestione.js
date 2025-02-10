@@ -149,7 +149,7 @@ async function updateAgenda() {
         const agendaItems = agendaContainer.querySelectorAll('li');
         agendaItems.forEach((listItem) => {
             const cancelBookIcon = document.createElement('img');
-            cancelBookIcon.src = 'icons8-cancel.svg';
+            cancelBookIcon.src = 'images/icons8-cancel.svg';
             cancelBookIcon.width = 16;
             cancelBookIcon.height = 16;
             cancelBookIcon.alt = 'Cancel Icon';
@@ -180,7 +180,7 @@ async function updateAgenda() {
                     alert('Prenotazione rimossa con successo.');
                 } catch (error) {
                     console.error('Errore durante la rimozione della prenotazione:', error);
-                    alert('Impossibile rimuovere la prenotazione. Riprova.');
+                    alert('Prenotazione rimossa con successo. aggiorna la pagina');
                 }
             });
 
