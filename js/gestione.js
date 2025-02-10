@@ -93,54 +93,56 @@ async function updateAgenda() {
             return dateA - dateB;
         });
 
-        reservations.forEach((reservation, index) => {
-            const { date, slot, name, id } = reservation;
-            const dateObject = new Date(date);
-            const monthName = dateObject.toLocaleString('it-IT', { month: 'long', year: 'numeric' });
-            const formattedDate = dateObject.toLocaleDateString('it-IT', { weekday: 'long', day: '2-digit', month: 'long' });
+        reservations.sort((a, b) => new Date(a.date) - new Date(b.date));
 
-            // Se cambia il mese, crea una nuova sezione
-            if (monthName !== currentMonth) {
-                currentMonth = monthName;
+reservations.forEach((reservation, index) => {
+    const { date, slot, name, id } = reservation;
+    const dateObject = new Date(date);
+    const monthName = dateObject.toLocaleString('it-IT', { month: 'long', year: 'numeric' });
+    const formattedDate = dateObject.toLocaleDateString('it-IT', { weekday: 'long', day: '2-digit', month: 'long' });
 
-                const monthContainer = document.createElement('div');
-                monthContainer.classList.add('month-container');
+    // Se cambia il mese, crea una nuova sezione
+    if (monthName !== currentMonth) {
+        currentMonth = monthName;
 
-                const monthTitle = document.createElement('h2');
-                monthTitle.textContent = currentMonth;
-                monthContainer.appendChild(monthTitle);
+        const monthContainer = document.createElement('div');
+        monthContainer.classList.add('month-container');
 
-                monthList = document.createElement('div');
-                monthList.classList.add('month-list');
-                monthContainer.appendChild(monthList);
+        const monthTitle = document.createElement('h2');
+        monthTitle.textContent = currentMonth;
+        monthContainer.appendChild(monthTitle);
 
-                agendaContainer.appendChild(monthContainer);
-            }
+        monthList = document.createElement('div');
+        monthList.classList.add('month-list');
+        monthContainer.appendChild(monthList);
 
-            // Se cambia il giorno, crea una nuova lista UL per quel giorno
-            if (date !== currentDay) {
-                currentDay = date;
+        agendaContainer.appendChild(monthContainer);
+    }
 
-                // Separatore con nome del giorno
-                const daySeparator = document.createElement('div');
-                daySeparator.classList.add('day-separator');
-                daySeparator.innerHTML = `<h3>${formattedDate}</h3>`;
+    // Se cambia il giorno, crea una nuova lista UL per quel giorno
+    if (date !== currentDay) {
+        currentDay = date;
 
-                monthList.appendChild(daySeparator);
+        // Separatore con nome del giorno
+        const daySeparator = document.createElement('div');
+        daySeparator.classList.add('day-separator');
+        daySeparator.innerHTML = `<h3>${formattedDate}</h3>`;
 
-                // Creiamo un nuovo ul per le prenotazioni del giorno
-                dayList = document.createElement('ul');
-                dayList.classList.add('day-list');
-                monthList.appendChild(dayList);
-            }
+        monthList.appendChild(daySeparator);
 
-            // Creiamo il singolo elemento della prenotazione
-            const listItem = document.createElement('li');
-            listItem.setAttribute('data-id', id);
-            listItem.innerHTML = `<time datetime="${date}">${slot}</time> <br> ${name}`;
+        // Creiamo un nuovo ul per le prenotazioni del giorno
+        dayList = document.createElement('ul');
+        dayList.classList.add('day-list');
+        monthList.appendChild(dayList);
+    }
 
-            dayList.appendChild(listItem);
-        });
+    // Creiamo il singolo elemento della prenotazione
+    const listItem = document.createElement('li');
+    listItem.setAttribute('data-id', id);
+    listItem.innerHTML = `<time datetime="${date}">${slot}</time> <br> ${name}`;
+
+    dayList.appendChild(listItem);
+});
 
 
         
