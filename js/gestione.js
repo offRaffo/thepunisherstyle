@@ -5,6 +5,10 @@ async function updateAgenda() {
         const startDate = document.getElementById('start_close_day');
         const endDate = document.getElementById('end_close_day');
         let isListenerAdded = false;
+        let currentDay = null;
+        let currentMonth = null;
+        let monthList = null;
+        let dayGroup = null; // Contenitore per le prenotazioni giornaliere
         const modifyhourbutn = document.getElementById('modify_book_time')
         const modify_date = document.getElementById('modify_date')
         async function send_time(start_book, end_book, day) {
@@ -16,6 +20,8 @@ async function updateAgenda() {
             });
             alert("orari modificati");
         }
+
+
         modify_date.addEventListener('click', function () {
             modify_date.classList.add('clicked');
             setTimeout(() => {
@@ -67,7 +73,6 @@ async function updateAgenda() {
                 console.log('Inserisci entrambi gli orari.');
             }
         });
-          
 
         const response = await fetch(pc_address + '/reservations');
         if (!response.ok) {
@@ -82,16 +87,19 @@ async function updateAgenda() {
         }
 
         agendaContainer.innerHTML = '';
-        reservations.sort((a, b) => new Date(a.date) - new Date(b.date));
+        reservations.sort((a, b) => {
+            const dateA = new Date(`${a.date} ${a.slot}`);
+            const dateB = new Date(`${b.date} ${b.slot}`);
+            return dateA - dateB;
+        });
 
-        let currentMonth = null;
-        let monthList = null;
-
-        reservations.forEach(reservation => {
+        reservations.forEach((reservation, index) => {
             const { date, slot, name, id } = reservation;
             const dateObject = new Date(date);
-            const monthName = dateObject.toLocaleString('default', { month: 'long', year: 'numeric' });
+            const monthName = dateObject.toLocaleString('it-IT', { month: 'long', year: 'numeric' });
+            const formattedDate = dateObject.toLocaleDateString('it-IT', { weekday: 'long', day: '2-digit', month: 'long' });
 
+            // Se cambia il mese, crea una nuova sezione
             if (monthName !== currentMonth) {
                 currentMonth = monthName;
 
@@ -102,27 +110,46 @@ async function updateAgenda() {
                 monthTitle.textContent = currentMonth;
                 monthContainer.appendChild(monthTitle);
 
-                monthList = document.createElement('ul');
+                monthList = document.createElement('div');
                 monthList.classList.add('month-list');
                 monthContainer.appendChild(monthList);
 
                 agendaContainer.appendChild(monthContainer);
             }
 
+            // Se cambia il giorno, crea una nuova lista UL per quel giorno
+            if (date !== currentDay) {
+                currentDay = date;
+
+                // Separatore con nome del giorno
+                const daySeparator = document.createElement('div');
+                daySeparator.classList.add('day-separator');
+                daySeparator.innerHTML = `<h3>${formattedDate}</h3>`;
+
+                monthList.appendChild(daySeparator);
+
+                // Creiamo un nuovo ul per le prenotazioni del giorno
+                dayList = document.createElement('ul');
+                dayList.classList.add('day-list');
+                monthList.appendChild(dayList);
+            }
+
+            // Creiamo il singolo elemento della prenotazione
             const listItem = document.createElement('li');
             listItem.setAttribute('data-id', id);
-            listItem.innerHTML = `
-                <time datetime="${date}">${dateObject.getDate()}</time>
-                ${slot} - ${name}
-            `;
+            listItem.innerHTML = `<time datetime="${date}">${slot}</time> <br> ${name}`;
 
-            monthList.appendChild(listItem);
+            dayList.appendChild(listItem);
         });
+
+
+        
+
 
         const agendaItems = agendaContainer.querySelectorAll('li');
         agendaItems.forEach((listItem) => {
             const cancelBookIcon = document.createElement('img');
-            cancelBookIcon.src = 'images/icons8-cancel.svg';
+            cancelBookIcon.src = 'icons8-cancel.svg';
             cancelBookIcon.width = 16;
             cancelBookIcon.height = 16;
             cancelBookIcon.alt = 'Cancel Icon';
@@ -153,7 +180,7 @@ async function updateAgenda() {
                     alert('Prenotazione rimossa con successo.');
                 } catch (error) {
                     console.error('Errore durante la rimozione della prenotazione:', error);
-                    alert('Prenotazione rimossa con successo.');
+                    alert('Impossibile rimuovere la prenotazione. Riprova.');
                 }
             });
 
@@ -163,8 +190,6 @@ async function updateAgenda() {
 
             listItem.addEventListener('mouseleave', () => {
                 cancelBookIcon.style.opacity = '0';
-            });
-            listItem.addEventListener('touchstart', () => {
             });
         });
     } catch (error) {
