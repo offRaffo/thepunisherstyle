@@ -191,6 +191,8 @@ async function updateAgenda() {
             listItem.addEventListener('mouseleave', () => {
                 cancelBookIcon.style.opacity = '0';
             });
+            listItem.addEventListener('touchstart', () => {
+            });
         });
     } catch (error) {
         console.error('Errore durante l\'aggiornamento dell\'agenda:', error);
