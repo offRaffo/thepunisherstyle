@@ -93,56 +93,54 @@ async function updateAgenda() {
             return dateA - dateB;
         });
 
-        reservations.sort((a, b) => new Date(a.date) - new Date(b.date));
+        reservations.forEach((reservation, index) => {
+            const { date, slot, name, id } = reservation;
+            const dateObject = new Date(date);
+            const monthName = dateObject.toLocaleString('it-IT', { month: 'long', year: 'numeric' });
+            const formattedDate = dateObject.toLocaleDateString('it-IT', { weekday: 'long', day: '2-digit', month: 'long' });
 
-reservations.forEach((reservation, index) => {
-    const { date, slot, name, id } = reservation;
-    const dateObject = new Date(date);
-    const monthName = dateObject.toLocaleString('it-IT', { month: 'long', year: 'numeric' });
-    const formattedDate = dateObject.toLocaleDateString('it-IT', { weekday: 'long', day: '2-digit', month: 'long' });
+            // Se cambia il mese, crea una nuova sezione
+            if (monthName !== currentMonth) {
+                currentMonth = monthName;
 
-    // Se cambia il mese, crea una nuova sezione
-    if (monthName !== currentMonth) {
-        currentMonth = monthName;
+                const monthContainer = document.createElement('div');
+                monthContainer.classList.add('month-container');
 
-        const monthContainer = document.createElement('div');
-        monthContainer.classList.add('month-container');
+                const monthTitle = document.createElement('h2');
+                monthTitle.textContent = currentMonth;
+                monthContainer.appendChild(monthTitle);
 
-        const monthTitle = document.createElement('h2');
-        monthTitle.textContent = currentMonth;
-        monthContainer.appendChild(monthTitle);
+                monthList = document.createElement('div');
+                monthList.classList.add('month-list');
+                monthContainer.appendChild(monthList);
 
-        monthList = document.createElement('div');
-        monthList.classList.add('month-list');
-        monthContainer.appendChild(monthList);
+                agendaContainer.appendChild(monthContainer);
+            }
 
-        agendaContainer.appendChild(monthContainer);
-    }
+            // Se cambia il giorno, crea una nuova lista UL per quel giorno
+            if (date !== currentDay) {
+                currentDay = date;
 
-    // Se cambia il giorno, crea una nuova lista UL per quel giorno
-    if (date !== currentDay) {
-        currentDay = date;
+                // Separatore con nome del giorno
+                const daySeparator = document.createElement('div');
+                daySeparator.classList.add('day-separator');
+                daySeparator.innerHTML = `<h3>${formattedDate}</h3>`;
 
-        // Separatore con nome del giorno
-        const daySeparator = document.createElement('div');
-        daySeparator.classList.add('day-separator');
-        daySeparator.innerHTML = `<h3>${formattedDate}</h3>`;
+                monthList.appendChild(daySeparator);
 
-        monthList.appendChild(daySeparator);
+                // Creiamo un nuovo ul per le prenotazioni del giorno
+                dayList = document.createElement('ul');
+                dayList.classList.add('day-list');
+                monthList.appendChild(dayList);
+            }
 
-        // Creiamo un nuovo ul per le prenotazioni del giorno
-        dayList = document.createElement('ul');
-        dayList.classList.add('day-list');
-        monthList.appendChild(dayList);
-    }
+            // Creiamo il singolo elemento della prenotazione
+            const listItem = document.createElement('li');
+            listItem.setAttribute('data-id', id);
+            listItem.innerHTML = `<time datetime="${date}">${slot}</time> <br> ${name}`;
 
-    // Creiamo il singolo elemento della prenotazione
-    const listItem = document.createElement('li');
-    listItem.setAttribute('data-id', id);
-    listItem.innerHTML = `<time datetime="${date}">${slot}</time> <br> ${name}`;
-
-    dayList.appendChild(listItem);
-});
+            dayList.appendChild(listItem);
+        });
 
 
         
