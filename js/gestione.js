@@ -97,7 +97,7 @@ async function updateAgenda() {
             return dateA - dateB;
         });
         
-
+        reservations.reverse();
         reservations.forEach((reservation, index) => {
             const { date, slot, name, id } = reservation;
             const dateObject = new Date(date);
