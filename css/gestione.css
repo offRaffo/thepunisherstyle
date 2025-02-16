@@ -23,6 +23,7 @@ ul {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   /* Tre colonne */
+  grid-auto-flow:row;
   gap: 10px;
   /* Spazio tra gli elementi della griglia */
   padding-left: 20px;
@@ -193,7 +194,8 @@ ul .today time {
   ul {
     grid-template-columns: repeat(2, 1fr);
   }
-  .month-container{
-    display: block;
+  .month-container {
+    grid-column: 1 / -1;
+    order: -1; /* Ordine inverso */
   }
 }
