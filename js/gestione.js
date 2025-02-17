@@ -91,7 +91,6 @@ async function updateAgenda() {
             return new Date(a.date) - new Date(b.date);
         });
         
-        console.log(reservations.map(r => r.date));
         
         
         
