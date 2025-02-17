@@ -88,16 +88,14 @@ async function updateAgenda() {
 
         agendaContainer.innerHTML = '';
         reservations.sort((a, b) => {
-            const [dayA, monthA, yearA] = a.date.split('-').map(Number);
-            const [dayB, monthB, yearB] = b.date.split('-').map(Number);
-            
-            const dateA = new Date(yearA, monthA - 1, dayA, ...a.slot.split(':').map(Number));
-            const dateB = new Date(yearB, monthB - 1, dayB, ...b.slot.split(':').map(Number));
-            
-            return dateA - dateB;
+            return new Date(a.date) - new Date(b.date);
         });
         
-        reservations.reverse();
+        console.log(reservations.map(r => r.date));
+        
+        
+        
+        
         reservations.forEach((reservation, index) => {
             const { date, slot, name, id } = reservation;
             const dateObject = new Date(date);
