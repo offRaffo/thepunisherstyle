@@ -193,9 +193,14 @@ ul .today time {
 
   ul {
     grid-template-columns: repeat(2, 1fr);
+    padding-left: unset;
   }
   .month-container {
     grid-column: 1 / -1;
-    order: -1; /* Ordine inverso */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
   }
+  
 }
