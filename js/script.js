@@ -60,7 +60,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
         console.log("Updated Start date:", start_date);
         console.log("Updated End date:", end_date);
+        // Ottieni la data selezionata
         selectedDate = dateInput.value;
+
+        // Convertilo in un oggetto Date
+        let dateObj = new Date(selectedDate);
+
+        // Verifica se è domenica (0 corrisponde a domenica)
+        if (dateObj.getDay() === 0) {
+            alert("La domenica siamo chiusi! verrà selezionato il lunedì");
+
+            // Aggiungi 1 giorno alla data per passare al lunedì (getDay() = 1)
+            dateObj.setDate(dateObj.getDate() + 1);
+
+            // Converte la nuova data in formato stringa (YYYY-MM-DD)
+            selectedDate = dateObj.toISOString().split('T')[0];
+        }
+        dateInput.value = selectedDate;
         console.log("inizio:", start_date, "End date:", end_date);
 
         // Verifica se la data selezionata è compresa tra start_date e end_date
@@ -100,88 +116,88 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     function watchForHover() {
         let lastTouchTime = 0;  // Per ignorare eventi emulati di mousemove
-      
+
         function enableHover() {
-          if (new Date() - lastTouchTime < 500) return;  // Ignora eventi emulati
-          document.body.classList.add('hasHover');
+            if (new Date() - lastTouchTime < 500) return;  // Ignora eventi emulati
+            document.body.classList.add('hasHover');
         }
-      
+
         function disableHover() {
-          document.body.classList.remove('hasHover');
+            document.body.classList.remove('hasHover');
         }
-      
+
         function updateLastTouchTime() {
-          lastTouchTime = new Date();
+            lastTouchTime = new Date();
         }
-      
+
         document.addEventListener('touchstart', updateLastTouchTime, true);
         document.addEventListener('touchstart', disableHover, true);
         document.addEventListener('mousemove', enableHover, true);
-      
+
         enableHover();  // Abilita hover se il mouse è in movimento
-      }
-      
-      watchForHover();  // Avvia la funzione
-      
+    }
+
+    watchForHover();  // Avvia la funzione
+
 
     function displayTimeSlots() {
         slotsList.innerHTML = '';  // Pulisci la lista ogni volta che cambia la data
-    
+
         availableSlots.forEach((slot, index) => {
-            
+
             const li = document.createElement('li');
             li.textContent = slot;
-    
+
             let touchCount = 0;  // Contatore dei tocchi per ogni <li>
             let touchStartTime = 0;  // Memorizza il tempo di inizio del tocco
             let isTouching = false;  // Flag per il tocco in corso
-    
+
             // Gestisci l'evento onClick (tocco breve)
             li.onclick = () => {
                 if (isTouching) return; // Se è un tocco lungo, evita la selezione
                 selectSlot(slot);  // Se il tocco è breve, seleziona lo slot
             };
-    
+
             // Gestisci l'evento onTouchStart
             li.ontouchstart = (event) => {
                 touchStartTime = Date.now();  // Registra l'inizio del tocco
                 isTouching = true;  // Imposta il flag del tocco
             };
-    
+
             // Gestisci l'evento onTouchEnd
             li.ontouchend = (event) => {
                 const touchDuration = Date.now() - touchStartTime;  // Calcola la durata del tocco
                 isTouching = false;  // Reset del flag dopo che il tocco è finito
-    
+
                 // Se il tocco dura meno di 300ms, è considerato un "tap"
                 if (touchDuration < 300) {
                     touchCount++;
-    
+
                     // Se è il secondo tocco, seleziona lo slot
                     if (touchCount === 2) {
                         selectSlot(slot);  // Se il tocco è breve e consecutivo, esegui la selezione
                         touchCount = 0;  // Reset del contatore
                     }
-    
+
                     // Reset del contatore se non arriva al secondo tocco entro un intervallo di 500ms
                     setTimeout(() => {
                         touchCount = 0;
                     }, 500);  // Timeout di 500ms per il secondo tocco
                 }
             };
-    
+
             // Dopo un breve ritardo, rendi l'elemento visibile
             setTimeout(() => {
                 li.classList.add('visible');
             }, index * 100);  // Ritardo progressivo tra gli orari
             slotsList.appendChild(li);
         });
-    
+
         timeSlotsDiv.classList.remove('hidden');
         console.log('Time slots displayed');
     }
-    
-    
+
+
     function showtoastmsg(msg) {
         window.scrollTo({ top: 0, behavior: 'smooth' });
         toast.classList.add('visible');
@@ -210,7 +226,7 @@ document.addEventListener('DOMContentLoaded', function () {
             button.disabled = false;
         }, 1000);
         button.onclick = () => bookAppointment(slot);
-        time=slot;
+        time = slot;
         console.log(`Selected slot: ${slot},time: ${time}`);
     }
 
@@ -263,7 +279,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let parts = selectedDate.split('-');  // Divide la stringa in ["2025", "02", "09"]
         let formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;  // Riordina in GG-MM-YYYY
         let nome = document.getElementById('name').value.trim();
-        console.log("nome: ",nome);
+        console.log("nome: ", nome);
         showtoastmsg(`abbiamo ricevuto la tua prenotazione ci vediamo il ${formattedDate} alle ${time} a presto ${nome}`);
     });
 
