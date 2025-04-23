@@ -46,6 +46,7 @@ async function updateAgenda() {
                     .then(response => response.json())
                     .then(data => {
                         console.log('Risposta dal server:', data);
+                        alert("punizione inviata con successo")
                     })
                     .catch(error => {
                         console.error('Errore durante la richiesta:', error);
