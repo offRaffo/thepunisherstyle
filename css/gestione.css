@@ -1,206 +1,189 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;500;800&display=swap");
-
-html,
-body {
-  height: 100vh;
+* {
   margin: 0;
-  background: radial-gradient(circle, #eeaeca 0%, #94bbe9 100%);
-  font-family: "Poppins", sans-serif;
-}
-
-body {
-  display: flex;
-  flex-flow: column;
-  align-items: center;
-}
-
-h1 {
-  font-weight: 800;
-  margin: 1rem 0 0;
-}
-
-ul {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  /* Tre colonne */
-  grid-auto-flow:row;
-  gap: 10px;
-  /* Spazio tra gli elementi della griglia */
-  padding-left: 20px;
-  margin: 0;
-}
-
-ul li {
-  display: flex;
-  width: 10rem;
-  height: 10rem;
-  margin: 0.25rem;
-  flex-flow: column;
-  border-radius: 0.2rem;
-  padding: 1rem;
-  font-weight: 300;
-  font-size: 0.8rem;
+  padding: 0;
   box-sizing: border-box;
-  background: rgba(255, 255, 255, 0.25);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  position: relative;
 }
 
-ul li:hover {
-  background-color: antiquewhite;
+body {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #eeaeca 0%, #94bbe9 100%);
+  color: #333;
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-ul li img {
-  transition: opacity 1s ease;
-  opacity: 0;
-  position: absolute;
-  /* Posiziona l'immagine in modo assoluto all'interno del li */
-  top: 5px;
-  /* Distanza dall'alto */
-  right: 5px;
-  /* Distanza dal lato destro */
-  cursor: pointer;
+.header {
+  background: white;
+  padding: 1rem 2rem;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  top: 0;
+  z-index: 10;
 }
 
-ul li:hover img {
-  opacity: 1;
-  /* Mostra l'immagine quando si passa sopra l'elemento */
+.header h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  background: linear-gradient(to right, #7b4397, #dc2430);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-ul li time {
-  font-size: 2rem;
-  margin: 0 0 1rem 0;
-  font-weight: 500;
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
-ul .today {
-  background: #ffffff70;
+.card {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  transition: transform 0.3s ease;
 }
 
-ul .today time {
-  font-weight: 800;
+.card:hover {
+  transform: translateY(-5px);
 }
 
-.month-list {
+.card h2 {
+  font-size: 1.4rem;
+  margin-bottom: 1.5rem;
+  color: #4a148c;
+}
+
+.card form {
   display: flex;
   flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-end;
+}
+
+.card input,
+.card button {
+  padding: 0.8rem 1rem;
+  border-radius: 30px;
+  border: none;
+  font-size: 1rem;
+  outline: none;
+}
+
+.card input {
+  flex: 1;
+  min-width: 200px;
+  background: #f0f0f0;
+  transition: all 0.3s ease;
+}
+
+.card input:focus {
+  background: #e0e0e0;
+}
+
+.card button {
+  background: linear-gradient(to right, #7b4397, #dc2430);
+  color: white;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.card button:hover {
+  transform: scale(1.05);
+}
+
+.agenda {
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.agenda h2 {
+  font-size: 1.4rem;
+  margin-bottom: 1.5rem;
+  color: #4a148c;
+}
+
+.month-container {
+  margin-top: 2rem;
+}
+
+.month-container h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: #6a1b9a;
+}
+
+.day-separator {
+  margin: 1rem 0 0.5rem;
+  padding: 0.5rem;
+  background: #eee;
+  border-radius: 8px;
+  text-align: left;
+}
+
+.day-list {
   list-style: none;
-  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.day-list li {
+  background: #fff;
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+  transition: transform 0.3s ease;
+}
+
+.day-list li.showtransiction {
+  transform: translateY(-5px);
+}
+
+.day-list time {
+  font-weight: bold;
+  color: #7b4397;
+  display: block;
+  margin-bottom: 0.5rem;
 }
 
 #cancel-book-icon {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  cursor: pointer;
 }
 
-#modify_book_time,
-#modify_date {
-  position: relative;
-  /* Necessario per posizionare correttamente before e after */
-  border-radius: 50px;
-  /* Angoli arrotondati */
-  border: none;
-  /* Nessun bordo */
-  padding: 20px;
-  /* Aggiungi un po' di spazio intorno al contenuto del pulsante */
+.day-list li.showtransiction #cancel-book-icon {
+  opacity: 1;
+}
+
+
+.footer {
+  text-align: center;
+  padding: 1rem;
+  background: #eee;
+  font-size: 0.9rem;
+  color: #555;
 }
 
 .clicked {
-  animation: clickAnimation 0.2s ease-out;
+  animation: clickAnim 0.2s ease-out;
 }
 
-#start_book,
-#end_book {
-  position: relative;
-  /* Necessario per posizionare correttamente before e after */
-  border-radius: 50px;
-  /* Angoli arrotondati */
-  border: none;
-  /* Nessun bordo */
-  padding: 10px;
-  /* Aggiungi un po' di spazio intorno al contenuto del pulsante */
-}
-
-#booking_container {
-  display: flex;
-  justify-content: space-around;
-  gap: 50px;
-  width: 100%;
-}
-
-#start_close_day,
-#end_close_day,
-#calendar-hour-modifier {
-  position: relative;
-  /* Necessario per posizionare correttamente before e after */
-  border-radius: 50px;
-  /* Angoli arrotondati */
-  border: none;
-  /* Nessun bordo */
-  padding: 10px;
-  /* Aggiungi un po' di spazio intorno al contenuto del pulsante */
-}
-
-#time {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-#date {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-@media only screen and (max-width:768px) {
-
-  #booking_container {
-    display: flex;
-    gap: 50px;
-    width: 100%;
-    flex-wrap: nowrap;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  #time {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    flex-direction: column;
-  }
-
-  #date {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    flex-direction: column;
-  }
-
-  .month-list {
-    display: flex;
-    flex-wrap: wrap;
-    list-style: none;
-    padding: 0;
-    justify-content: center;
-  }
-
-  ul {
-    grid-template-columns: repeat(2, 1fr);
-    padding-left: unset;
-  }
-  .month-container {
-    grid-column: 1 / -1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-  }
-  
+@keyframes clickAnim {
+  0% { transform: scale(1); }
+  50% { transform: scale(0.95); }
+  100% { transform: scale(1); }
 }
