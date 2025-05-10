@@ -88,14 +88,6 @@ async function updateAgenda() {
             const dateA = new Date(`${a.date}T${formattedSlotA}`);
             const dateB = new Date(`${b.date}T${formattedSlotB}`);
 
-            // Controllo per date non valide
-            if (isNaN(dateA.getTime())) {
-                console.error(`Data non valida per la prenotazione: ${a.date}T${formattedSlotA}`);
-            }
-            if (isNaN(dateB.getTime())) {
-                console.error(`Data non valida per la prenotazione: ${b.date}T${formattedSlotB}`);
-            }
-
             return dateA - dateB; // Ordina per data e orario
         });
 
@@ -103,11 +95,6 @@ async function updateAgenda() {
         futureReservations.forEach(res => {
             const formattedSlot = formatTime(res.slot);
             const dateObj = new Date(`${res.date}T${formattedSlot}`);
-            if (isNaN(dateObj.getTime())) {
-                console.error(`Data non valida per la prenotazione: ${res.date}T${formattedSlot}`);
-            } else {
-                console.log(`Data: ${res.date}, Ora: ${formattedSlot}, Data convertita: ${dateObj}`);
-            }
         });
 
 
@@ -170,17 +157,6 @@ async function updateAgenda() {
 
             item.appendChild(cancelIcon);
             dayList.appendChild(item);
-
-            // Eventi per il tap (animazione e visibilità dell'icona)
-            $(function () {
-                $(".day-list li").on("tap", function () {
-                    const item = $(this);
-                    item.addClass('showtransiction');
-                    setTimeout(() => {
-                        item.removeClass('showtransiction');
-                    }, 1000);
-                });
-            });
 
             // Gestione dell'animazione dell'icona
             item.addEventListener('mouseenter', () => {
