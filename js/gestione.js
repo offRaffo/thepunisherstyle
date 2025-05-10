@@ -1,200 +1,199 @@
+document.addEventListener('DOMContentLoaded', function () {
+    updateAgenda();
+});
 
 async function updateAgenda() {
     try {
         const pc_address = 'https://barber-shop-iz21.onrender.com';
-        const startDate = document.getElementById('start_close_day');
-        const endDate = document.getElementById('end_close_day');
-        let isListenerAdded = false;
-        let currentDay = null;
-        let currentMonth = null;
-        let monthList = null;
-        let dayGroup = null;
-        const modifyhourbutn = document.getElementById('modify_book_time');
-        const modify_date = document.getElementById('modify_date');
+        const agendaContainer = document.getElementById('agenda');
+        if (!agendaContainer) return;
 
-        async function send_time(start_book, end_book, day) {
-            const timeResponse = await fetch(pc_address + `/booking-time?start_book=${start_book}&end_book=${end_book}&day=${day}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-            alert("orari modificati");
-        }
+        // Pulisci contenuto esistente
+        agendaContainer.innerHTML = '';
 
-        modify_date.addEventListener('click', function () {
-            modify_date.classList.add('clicked');
-            setTimeout(() => {
-                modify_date.classList.remove('clicked');
-            }, 200);
-            const startDate = document.getElementById('start_close_day').value;
-            const endDate = document.getElementById('end_close_day').value;
+        // Configurazione pulsanti
+        const modifyhourbutn = document.getElementById('form-orario');
+        const modify_date_form = document.getElementById('form-data');
 
-            if (startDate && endDate) {
-                const requestData = {
-                    start_date: startDate,
-                    end_date: endDate
-                };
+        // Evento modifica orari
+        modifyhourbutn.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            this.classList.add('clicked');
+            setTimeout(() => this.classList.remove('clicked'), 200);
 
-                fetch(pc_address + '/stop_days', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(requestData)
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log('Risposta dal server:', data);
-                        alert("punizione inviata con successo")
-                    })
-                    .catch(error => {
-                        console.error('Errore durante la richiesta:', error);
-                        alert('Errore durante l\'invio delle date.');});
-            } else {
-                alert("compà l'hai e selezionari tutti i dui");
-            }
-        });
-
-        modifyhourbutn.addEventListener('click', function () {
-            modifyhourbutn.classList.add('clicked');
-            setTimeout(() => {
-                modifyhourbutn.classList.remove('clicked');
-            }, 200);
             const startBook = document.getElementById('start_book').value;
             const endBook = document.getElementById('end_book').value;
             const day = document.getElementById('calendar-hour-modifier').value;
 
-            if (startBook && endBook) {
-                send_time(startBook, endBook, day);
+            if (startBook && endBook && day) {
+                await fetch(`${pc_address}/booking-time`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ start_book: startBook, end_book: endBook, day })
+                });
+                alert("Orari modificati");
             } else {
-                console.log('Inserisci entrambi gli orari.');
+                alert("Inserisci tutti i campi.");
             }
         });
 
-        const response = await fetch(pc_address + '/reservations');
-        if (!response.ok) {
-            throw new Error(`Errore nella chiamata al server: ${response.status}`);
-        }
+        // Evento modifica date chiusura
+        modify_date_form.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            this.classList.add('clicked');
+            setTimeout(() => this.classList.remove('clicked'), 200);
 
-        let reservations = await response.json();
+            const startDate = document.getElementById('start_close_day').value;
+            const endDate = document.getElementById('end_close_day').value;
+
+            if (startDate && endDate) {
+                await fetch(`${pc_address}/stop_days`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ start_date: startDate, end_date: endDate })
+                });
+                alert("Date di chiusura aggiornate");
+            } else {
+                alert("Seleziona entrambe le date.");
+            }
+        });
+
+        // Recupero prenotazioni
+        const response = await fetch(`${pc_address}/reservations`);
+        if (!response.ok) throw new Error(`Errore server: ${response.status}`);
+
+        const reservations = await response.json();
 
         // 🔥 FILTRO: rimuovi prenotazioni passate
         const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        reservations = reservations.filter(r => {
-            const resDate = new Date(`${r.date}T00:00:00`);
-            return resDate >= today;
+        today.setHours(0, 0, 0, 0); // Rimuove ore, minuti, secondi e millisecondi
+        const futureReservations = reservations.filter(r => {
+            const resDate = new Date(`${r.date}T00:00:00`);  // Aggiungiamo T00:00:00 per standardizzare la data
+            return resDate >= today; // Rimuove le prenotazioni passate
         });
 
-        const agendaContainer = document.querySelector('#agenda');
-        if (!agendaContainer) {
-            console.error('Elemento #agenda non trovato.');
-            return;
+        // 🔥 Ordina le prenotazioni in ordine cronologico (data + orario)
+        function formatTime(time) {
+            // Aggiunge uno zero iniziale se necessario
+            const [hours, minutes] = time.split(':');
+            const formattedHours = hours.padStart(2, '0');
+            const formattedMinutes = minutes.padStart(2, '0');
+            return `${formattedHours}:${formattedMinutes}`;
         }
 
-        if (reservations.length === 0) {
-            agendaContainer.innerHTML = '<p>Nessuna prenotazione futura.</p>';
-            return;
-        }
+        // 🔥 Ordina le prenotazioni in ordine cronologico (data + orario)
+        futureReservations.sort((a, b) => {
+            const formattedSlotA = formatTime(a.slot);
+            const formattedSlotB = formatTime(b.slot);
+            const dateA = new Date(`${a.date}T${formattedSlotA}`);
+            const dateB = new Date(`${b.date}T${formattedSlotB}`);
 
-        agendaContainer.innerHTML = '';
-        reservations.sort((a, b) => new Date(a.date) - new Date(b.date));
+            // Controllo per date non valide
+            if (isNaN(dateA.getTime())) {
+                console.error(`Data non valida per la prenotazione: ${a.date}T${formattedSlotA}`);
+            }
+            if (isNaN(dateB.getTime())) {
+                console.error(`Data non valida per la prenotazione: ${b.date}T${formattedSlotB}`);
+            }
 
-        reservations.forEach((reservation, index) => {
-            const { date, slot, name, id } = reservation;
-            const dateObject = new Date(date);
-            const monthName = dateObject.toLocaleString('it-IT', { month: 'long', year: 'numeric' });
-            const formattedDate = dateObject.toLocaleDateString('it-IT', { weekday: 'long', day: '2-digit', month: 'long' });
+            return dateA - dateB; // Ordina per data e orario
+        });
+
+        // Log per verificare l'ordinamento
+        futureReservations.forEach(res => {
+            const formattedSlot = formatTime(res.slot);
+            const dateObj = new Date(`${res.date}T${formattedSlot}`);
+            if (isNaN(dateObj.getTime())) {
+                console.error(`Data non valida per la prenotazione: ${res.date}T${formattedSlot}`);
+            } else {
+                console.log(`Data: ${res.date}, Ora: ${formattedSlot}, Data convertita: ${dateObj}`);
+            }
+        });
+
+
+        let currentMonth = '';
+        let monthContainer, monthList, dayList, currentDay = '';
+
+        futureReservations.forEach(res => {
+            const dateObj = new Date(res.date);
+            const monthName = dateObj.toLocaleString('it-IT', { month: 'long', year: 'numeric' });
+            const formattedDate = dateObj.toLocaleDateString('it-IT', { weekday: 'long', day: '2-digit', month: 'long' });
 
             if (monthName !== currentMonth) {
                 currentMonth = monthName;
+                monthContainer = document.createElement('div');
+                monthContainer.className = 'month-container';
 
-                const monthContainer = document.createElement('div');
-                monthContainer.classList.add('month-container');
-
-                const monthTitle = document.createElement('h2');
-                monthTitle.textContent = currentMonth;
-                monthContainer.appendChild(monthTitle);
+                const title = document.createElement('h2');
+                title.textContent = currentMonth;
+                monthContainer.appendChild(title);
 
                 monthList = document.createElement('div');
-                monthList.classList.add('month-list');
+                monthList.className = 'month-list';
                 monthContainer.appendChild(monthList);
 
                 agendaContainer.appendChild(monthContainer);
             }
 
-            if (date !== currentDay) {
-                currentDay = date;
-
-                const daySeparator = document.createElement('div');
-                daySeparator.classList.add('day-separator');
-                daySeparator.innerHTML = `<h3>${formattedDate}</h3>`;
-
-                monthList.appendChild(daySeparator);
+            if (res.date !== currentDay) {
+                currentDay = res.date;
+                const separator = document.createElement('div');
+                separator.className = 'day-separator';
+                separator.innerHTML = `<h3>${formattedDate}</h3>`;
+                monthList.appendChild(separator);
 
                 dayList = document.createElement('ul');
-                dayList.classList.add('day-list');
+                dayList.className = 'day-list';
                 monthList.appendChild(dayList);
             }
 
-            const listItem = document.createElement('li');
-            listItem.setAttribute('data-id', id);
-            listItem.innerHTML = `<time datetime="${date}">${slot}</time> <br> ${name}`;
-            dayList.appendChild(listItem);
-        });
+            const item = document.createElement('li');
+            item.setAttribute('data-id', res.id);
+            item.innerHTML = `<time>${res.slot}</time><br>${res.name}`;
 
-        const agendaItems = agendaContainer.querySelectorAll('li');
-        agendaItems.forEach((listItem) => {
-            const cancelBookIcon = document.createElement('img');
-            cancelBookIcon.src = 'images/icons8-cancel.svg';
-            cancelBookIcon.width = 16;
-            cancelBookIcon.height = 16;
-            cancelBookIcon.alt = 'Cancel Icon';
-            cancelBookIcon.id = 'cancel-book-icon';
+            // Aggiunta icona di cancellazione
+            const cancelIcon = document.createElement('img');
+            cancelIcon.src = 'images/icons8-cancel.svg';
+            cancelIcon.width = 16;
+            cancelIcon.height = 16;
+            cancelIcon.alt = 'Cancella';
+            cancelIcon.id = 'cancel-book-icon';
 
-            listItem.appendChild(cancelBookIcon);
-
-            cancelBookIcon.addEventListener('click', async function () {
-                const id = listItem.getAttribute('data-id');
-                if (!id) {
-                    console.error('ID della prenotazione mancante.');
-                    return;
-                }
-
-                try {
-                    const deleteResponse = await fetch(pc_address + `/reservations/${id}`, {
-                        method: 'DELETE',
-                    });
-
-                    if (!deleteResponse.ok) {
-                        throw new Error(`Errore nella rimozione della prenotazione: ${deleteResponse.status}`);
-                    }
-
-                    const result = await deleteResponse.json();
-                    console.log('Risposta del server:', result);
-
-                    listItem.remove();
-                    alert('Prenotazione rimossa con successo.');
-                } catch (error) {
-                    console.error('Errore durante la rimozione della prenotazione:', error);
-                    alert('Prenotazione rimossa con successo. aggiorna la pagina');
+            cancelIcon.addEventListener('click', async () => {
+                const id = item.getAttribute('data-id');
+                const deleteRes = await fetch(`${pc_address}/reservations/${id}`, { method: 'DELETE' });
+                if (deleteRes.ok) {
+                    item.remove();
+                    alert("Prenotazione rimossa");
                 }
             });
 
-            listItem.addEventListener('mouseenter', () => {
-                cancelBookIcon.style.opacity = '1';
+            item.appendChild(cancelIcon);
+            dayList.appendChild(item);
+
+            // Eventi per il tap (animazione e visibilità dell'icona)
+            $(function () {
+                $(".day-list li").on("tap", function () {
+                    const item = $(this);
+                    item.addClass('showtransiction');
+                    setTimeout(() => {
+                        item.removeClass('showtransiction');
+                    }, 1000);
+                });
             });
 
-            listItem.addEventListener('mouseleave', () => {
-                cancelBookIcon.style.opacity = '0';
+            // Gestione dell'animazione dell'icona
+            item.addEventListener('mouseenter', () => {
+                cancelIcon.style.opacity = '1';
+            });
+
+            item.addEventListener('mouseleave', () => {
+                cancelIcon.style.opacity = '0';
             });
         });
+
     } catch (error) {
-                alert('Errore durante l\'aggiornamento dell\'agenda. Ricarica la pagina.');
+        console.error('Errore durante l\'aggiornamento dell\'agenda:', error);
+        alert('Si è verificato un errore nel caricamento delle prenotazioni.');
     }
 }
-
-document.addEventListener('DOMContentLoaded', function () {
-    updateAgenda();
-});
