@@ -92,11 +92,12 @@ body {
   cursor: pointer;
   transition: transform 0.2s ease;
 }
-
+.ui-loader-header{
+  display: none;
+}
 .card button:hover {
   transform: scale(1.05);
 }
-
 .agenda {
   background: rgba(255, 255, 255, 0.85);
   border-radius: 12px;
