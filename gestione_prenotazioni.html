@@ -1,37 +1,56 @@
 <!DOCTYPE html>
-<html lang="en">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
+<html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <title>gestione prenotazioni</title>
-  <link rel="stylesheet" href="../css/gestione.css">
-  <link rel="shortcut icon" type="image/x-icon" href="images/logohamed.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="images/logohamed.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="images/logohamed.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="images/logohamed.png">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gestione Prenotazioni</title>
+  <link rel="stylesheet" href="css/gestione.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins :wght@300;500;700&display=swap" rel="stylesheet">
+  <script src="//code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script src="//code.jquery.com/mobile/1.5.0-alpha.1/jquery.mobile-1.5.0-alpha.1.min.js"></script>
+  <link rel="shortcut icon" type="image/png" href="images/logohamed.png">
 </head>
-
 <body>
-  <div id="booking_container">
-    <div id="time">
-      <h2>modifica orari</h2>
-      <input type="text" placeholder="Orario di apertura" id="start_book">
-      <input type="text" placeholder="Orario di chiusura" id="end_book">
-      <input type="date" id="calendar-hour-modifier">
-      <button id="modify_book_time">modifica orari</button>
-    </div>
-    <div id="date">
-      <h2>modifica date di chiusura</h2>
-      <input type="date" placeholder="giorno di chiusura" id="start_close_day">
-      <input type="date" placeholder="giorno di chiusura" id="end_close_day">
-      <button id="modify_date">modifica date</button>
-    </div>
-  </div>
-  <ul id="agenda">
-    <!-- Altri elementi... -->
-  </ul>
-  <script src="../js/gestione.js"></script>
-</body>
 
+  <header class="header">
+    <h1>Gestione Prenotazioni</h1>
+  </header>
+
+  <main class="container">
+
+    <!-- Modifica Orari -->
+    <section class="card">
+      <h2>Modifica Orari</h2>
+      <form id="form-orario">
+        <input type="text" id="start_book" placeholder="Orario di apertura (es. 09:00)" required />
+        <input type="text" id="end_book" placeholder="Orario di chiusura (es. 18:00)" required />
+        <input type="date" id="calendar-hour-modifier" required />
+        <button type="submit">Modifica Orari</button>
+      </form>
+    </section>
+
+    <!-- Modifica Date Chiusura -->
+    <section class="card">
+      <h2>Modifica Date di Chiusura</h2>
+      <form id="form-data">
+        <input type="date" id="start_close_day" required />
+        <input type="date" id="end_close_day" required />
+        <button type="submit">Modifica Date</button>
+      </form>
+    </section>
+
+    <!-- Agenda -->
+    <section class="agenda">
+      <h2>Prenotazioni</h2>
+      <div id="agenda"></div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <p>&copy; Hamed - Gestione Prenotazioni</p>
+  </footer>
+
+  <script src="js/gestione.js"></script>
+</body>
 </html>
