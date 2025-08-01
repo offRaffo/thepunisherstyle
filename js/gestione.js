@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 async function updateAgenda() {
     try {
-        const pc_address = 'https://barber-shop-iz21.onrender.com';
+        const pc_address = 'https://barber-shop-api-opmx.onrender.com';
         const agendaContainer = document.getElementById('agenda');
         if (!agendaContainer) return;
 
