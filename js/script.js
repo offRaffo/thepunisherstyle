@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const timeSlotsDiv = document.getElementById('time-slots');
     const slotsList = document.getElementById('slots-list');
     const today = new Date()
-    const pc_address = 'https://barber-shop-iz21.onrender.com';
+    const pc_address = 'https://barber-shop-api-opmx.onrender.com';
     const tomorrow = new Date(today); // Crea una nuova data basata su 'today'
     tomorrow.setDate(today.getDate() + 1); // Incrementa di 1 giorno
 
